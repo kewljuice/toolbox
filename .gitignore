@@ -3,3 +3,4 @@
 
 # Ignore all ._ files that osx creates
 ._*
+.DS_Store
