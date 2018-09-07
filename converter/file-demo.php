@@ -1,11 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CSV converter</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
 <?php
 /**
  *  PHP
  */
-
 ini_set('max_execution_time', 5000); //300 seconds = 5 minutes
 ini_set('memory_limit', '1000M');
-
 /**
  *  Plugins
  */
@@ -15,37 +21,30 @@ require "Plugins/Http.php";
 require "Plugins/Boolean.php";
 require "Plugins/Province.php";
 require "Plugins/CustomFields.php";
-
 /*
  * LOOP
  */
 $csv = fopen('input/demo.csv', 'r');
 $new = fopen('output/demo.csv', 'w');
-
+// Open table.
 print  "<table border=1>";
 $teller = 0;
-
 while ($row = fgetcsv($csv, 0, ';')) {
-
-  // open table row
+  // Open table row.
   echo "<tr>";
-
-  // first row th
+  // Add first row th.
   if ($teller == 0) {
-
-    // loop rows
+    // Loop rows.
     $lines = "";
     foreach ($row as &$value) {
       print "<th><strong>$value</strong></th>";
       $lines .= $value . ';';
     }
-
-    // Append source
+    // Append source.
     $source = "Source";
     print "<th><strong>$source</strong></th>";
     $lines .= $source . ';';
-
-    // export 2 file
+    // Export 2 file.
     fwrite($new, $lines . PHP_EOL);
   }
   else {
@@ -56,50 +55,48 @@ while ($row = fgetcsv($csv, 0, ';')) {
     $boolean = new Plugins\Boolean();
     $custom = new Plugins\CustomFields();
     $province = new Plugins\Province();
-
-    // loop rows
+    // Loop rows.
     $lines = "";
     foreach ($row as $key => &$value) {
       switch ($key) {
-
         case 0:
-          // uppercase first char.
+          // Uppercase first char.
           $line = $text->uppercasefirst($value);
           break;
         case 1:
-          // uppercase first char.
+          // Uppercase first char.
           $line = $text->uppercasefirst($value);
           break;
         case 2:
-          // lowercase.
+          // Lowercase.
           $line = $text->lowercase($value);
           break;
         case 3:
-          // add http.
+          // Add http to url.
           $line = $http->clean_url($value);
           break;
         case 5:
-          // uppercase first char.
+          // Uppercase first char.
           $line = $text->uppercasefirst($value);
           break;
         case 7:
-          // clean telephone.
+          // Fetch province by postal code.
           $line = $province->fetch($value);
           break;
         case 8:
-          // clean telephone.
+          // Clean telephone.
           $line = $phone->clean_be($value);
           break;
         case 9:
-          // clean telephone.
+          // Clean telephone.
           $line = $phone->clean_be($value);
           break;
         case 10:
-          // convert ja/nee.
+          // Convert ja/nee.
           $line = $boolean->convert($value);
           break;
         case 11:
-          // mapping (lowercase).
+          // Mapping (lowercase).
           $mapping = [
             'optie1' => '1',
             'optie2' => '2',
@@ -111,28 +108,25 @@ while ($row = fgetcsv($csv, 0, ';')) {
         default:
           $line = $value;
       }
-      // screen output.
+      // Screen output.
       print "<td>$line</td>";
-      // file output.
+      // Output.
       $lines .= $line . ';';
     }
-
-    // Append source
+    // Append source.
     $source = "Source Identifier here";
     print "<td>$source</td>";
     $lines .= $source . ';';
-
-    // export 2 file
+    // Export 2 file.
     fwrite($new, $lines . PHP_EOL);
   }
-
-  // close table row
+  // Close table row.
   print "</tr>";
-
-  // next
+  // Next.
   $teller++;
 }
-
-/* close table */
+// Close table.
 print "<table>";
-
+?>
+</body>
+</html>

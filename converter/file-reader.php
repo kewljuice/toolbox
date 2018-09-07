@@ -1,33 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CSV converter</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
 <?php
 /**
  *  PHP
  */
-
 ini_set('max_execution_time', 5000); //300 seconds = 5 minutes
 ini_set('memory_limit', '1000M');
-
 /*
  * LOOP
  */
 $csv = fopen('input/demo.csv', 'r');
-
+// Open table.
 print  "<table border=1>";
 $teller = 0;
-
 while ($row = fgetcsv($csv, 0, ';')) {
-  // open table row
+  // Open table row.
   echo "<tr>";
-  // first row th
+  // Add first row th.
   if ($teller == 0) {
-    // loop rows
+    // Loop rows.
     $i = 0;
     foreach ($row as &$value) {
-      print "<th><span style=\"color:red\">$i</span> <strong>$value</strong></th>";
+      print "<th><span class=\"red\">$i</span> <strong>$value</strong></th>";
       $i++;
     }
   }
   else {
-    // loop rows
+    // Loop rows.
     foreach ($row as $key => &$value) {
       switch ($key) {
         default:
@@ -35,11 +40,13 @@ while ($row = fgetcsv($csv, 0, ';')) {
       }
     }
   }
-  // close table row
+  // Close table row.
   print "</tr>";
-  // next
+  // Next.
   $teller++;
 }
-/* close table */
+// Close table.
 print "<table>";
-
+?>
+</body>
+</html>
